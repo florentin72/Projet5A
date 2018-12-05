@@ -131,16 +131,15 @@ class NeuralNetwork:
     def __init__(self):
         self.features_count = 50 * 50
         self.labels_count = 8
-
         self.hidden_layer_size = 3000
-        self.nbCouches
+        self.nbCouches = 3
         self.theta1 = None
         self.theta2 = None
         self.theta3 = None
         self.lambda_value = 3
         self.alpha = 0.05
         self.couche =  []
-        l1 = Layer(self.features_coun,self.hidden_layer_size)
+        l1 = Layer(self.features_count,self.hidden_layer_size)
         # add first layer
         self.couche.append(l1)
         # add hidden layer
@@ -148,7 +147,7 @@ class NeuralNetwork:
             l = Layer(self.hidden_layer_size,self.hidden_layer_size)
             self.couche.append(l)
         # add output layer 
-         self.couche.append(Layer(self.hidden_layer_size,self.labels_count))    
+            self.couche.append(Layer(self.hidden_layer_size,self.labels_count))    
 
 
     def initialize_weights(self):
@@ -174,28 +173,15 @@ class NeuralNetwork:
         a2 = sigmoid(z2)
         # Add ones to a2 as first column
         a2 = np.c_[np.ones(samples_count), a2]
-
-
         ######################################
-
-
-     
         # Output layer activation
         z3 = a2 @ self.theta2.transpose()
         a3 = sigmoid(z3)
         a3 = np.c_[np.ones(samples_count), a3]
-######################################
-
-       
-
-
-
-    
+        #####################################
         # Output layer activation
         z4 = a3 @ self.theta3.transpose()
         a4 = sigmoid(z4)
-
-        # Cost
        # cost = np.sum(-(y * np.log(a3) + (1 - y) * np.log(1 - a3)) / samples_count) 
         cost =  np.sum(-(y * np.log2(a4) + (1 - y) * np.log2(1 - a4)) / samples_count)
         # Add regularization
@@ -272,49 +258,11 @@ class NeuralNetwork:
         a3 = np.c_[np.ones(samples_count), a3]       
         # Output 
         z4 = a3 @ self.theta3.transpose()
-
-
-
-
-
-
-
         a4 = sigmoid(z4)
-
         # Convert binary prediction to de
-
-
-
-
-
-
-
         decimal_prediction = a4.argmax(1)
-
-
-
-
-
-
-
-
-        end_time = time.time() - start_ti
-
-
-
-
-
-
-
-        print("Prediction execution time:
-
-
-
-
-
-
-
-
+        end_time = time.time() - start_time
+        print("Prediction execution time:")
         return decimal_prediction
 
 
