@@ -1,0 +1,6 @@
+# Run pip install -r requirements.txt to install all dependencies.
+numpy==1.15.3
+opencv-python==3.4.3.18
+scikit-learn==0.20.0
+scipy==1.1.0
+Pillow==5.3.0
