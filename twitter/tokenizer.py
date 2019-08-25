@@ -28,12 +28,16 @@ f = open(source,'r')
 appendFile = open('filteredtext.txt','a') 
 # Remove stopwords
 for line in f: 
+       line = line.replace("«","")
+       line = line.replace("»","")
+       line = line.replace('"',"")
        line_split = line.split()
+       new_line = ""
        for word in line_split:
               word = re.sub(r'^https?:\/\/.*[\r\n]*', '', word, flags=re.MULTILINE)      
-                     
+              new_line = new_line +" "+ word  
 
-       doc = nlp(line_split)
+       doc = nlp(new_line)
        for token in doc:
               print(token, token.lemma_) 
               #lemmatisation
@@ -41,7 +45,7 @@ for line in f:
               if token not in stop_words:
                      print(token)
                      appendFile.writelines(" "+token) 
-              
+       appendFile.writelines('\n')        
 
        
        
