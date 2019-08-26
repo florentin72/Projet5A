@@ -13,9 +13,15 @@ nlp = spacy.load('fr_core_news_sm')
 
 stemmer = FrenchStemmer()
 
-
+print("*******************************************************************")
+print ("downloading nltk ressources")
+print("*******************************************************************")
 nltk.download('stopwords')
+nltk.download('punkt')
+print("*******************************************************************")
 print ("download finish")
+print("*******************************************************************")
+
 ps = PorterStemmer()
 source = 'fake.txt'
 # import french stop words list
@@ -25,11 +31,12 @@ stop_words = set(stopwords.words('french'))
 f = open(source,'r')
 
 
-appendFile = open('filteredtext.txt','a') 
+appendFile = open('tweetPropre.txt','a') 
 # Remove stopwords
 for line in f: 
        line = line.replace("«","")
        line = line.replace("»","")
+       line = line.replace(",","")
        line = line.replace('"',"")
        line_split = line.split()
        new_line = ""
@@ -39,21 +46,19 @@ for line in f:
 
        doc = nlp(new_line)
        for token in doc:
-              print(token, token.lemma_) 
+              #print(token, token.lemma_) 
               #lemmatisation
               token = token.lemma_
               if token not in stop_words:
-                     print(token)
-                     appendFile.writelines(" "+token) 
+                     #print(token)
+                     appendFile.writelines(" "+token)
+                     print (word_tokenize(token)) 
        appendFile.writelines('\n')        
 
-       
-       
          
         
-appendFile.close()
-       
+appendFile.close()    
 f.close()
-print("#########################################################################")
-
+print("*******************************************************************")
 print ("finish")
+print("*******************************************************************")
