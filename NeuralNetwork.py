@@ -1,5 +1,5 @@
 import time
-from Layer import Layer
+
 import numpy as np
 from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score, confusion_matrix
 from sklearn.model_selection import train_test_split, StratifiedKFold
@@ -7,8 +7,8 @@ from sklearn.model_selection import train_test_split, StratifiedKFold
 #############################
 # Global Variables          #
 #############################
-data_path = 'data/fixture/x.csv'
-classification_path = 'data/fixture/y.csv'
+data_path = 'data/x.csv'
+classification_path = 'data/y.csv'
 
 
 def random_weights(l_in, l_out):
@@ -21,6 +21,7 @@ def random_weights(l_in, l_out):
 def sigmoid(z):
     """ Calculate the sigmoid of all elements in the input array."""
     return 1.0 / (1.0 + np.exp(-z))
+
 
 def sigmoid_gradient(z):
     """ Calculate the sigmoid gradient of all elements in the input array."""
@@ -129,34 +130,21 @@ def test_with_train_data(x, y_true):
 
 class NeuralNetwork:
     def __init__(self):
-        self.features_count = 50 * 50
+        self.features_count = 1 * 25
         self.labels_count = 8
-        self.hidden_layer_size = 3000
-        self.nbCouches = 3
+
+        self.hidden_layer_size = 100
+
         self.theta1 = None
         self.theta2 = None
-        self.theta3 = None
-        self.lambda_value = 3
-        self.alpha = 0.05
-        self.couche =  []
-        l1 = Layer(self.features_count,self.hidden_layer_size)
-        # add first layer
-        self.couche.append(l1)
-        # add hidden layer
-        for x in range(3):
-            l = Layer(self.hidden_layer_size,self.hidden_layer_size)
-            self.couche.append(l)
-        # add output layer 
-            self.couche.append(Layer(self.hidden_layer_size,self.labels_count))    
 
+        self.lambda_value = 3
+        self.alpha = 0.4
 
     def initialize_weights(self):
         print("Generating initial weights")
         self.theta1 = random_weights(self.features_count, self.hidden_layer_size)
-        self.theta2 = random_weights(self.hidden_layer_size, 1000)
-        self.theta3 = random_weights(1000, self.labels_count)
-        #for l in self.couche:
-         #   l.theta = random_weights(l.nbNeurone,l.sortie)
+        self.theta2 = random_weights(self.hidden_layer_size, self.labels_count)
 
     def propagate(self, x, y):
         """
@@ -171,29 +159,22 @@ class NeuralNetwork:
         # Hidden layer activation
         z2 = x @ self.theta1.transpose()
         a2 = sigmoid(z2)
+
         # Add ones to a2 as first column
         a2 = np.c_[np.ones(samples_count), a2]
-        ######################################
+
         # Output layer activation
         z3 = a2 @ self.theta2.transpose()
         a3 = sigmoid(z3)
-        a3 = np.c_[np.ones(samples_count), a3]
-        #####################################
-        # Output layer activation
-        z4 = a3 @ self.theta3.transpose()
-        a4 = sigmoid(z4)
-       # cost = np.sum(-(y * np.log(a3) + (1 - y) * np.log(1 - a3)) / samples_count) 
-        cost =  np.sum(-(y * np.log2(a4) + (1 - y) * np.log2(1 - a4)) / samples_count)
+
+        # Cost
+        cost = np.sum(-(y * np.log(a3) + (1 - y) * np.log(1 - a3)) / samples_count)
+
         # Add regularization
         if self.lambda_value != 0:
             sum_carre_theta1 = np.sum(self.theta1[:, 1:] ** 2)
             sum_carre_theta2 = np.sum(self.theta2[:, 1:] ** 2)
-            sum_carre_theta3 = np.sum(self.theta3[:, 1:] ** 2)
-
-
-
-
-            S = sum_carre_theta1 + sum_carre_theta2 +sum_carre_theta3
+            S = sum_carre_theta1 + sum_carre_theta2
             cost = cost + self.lambda_value * S / (2 * samples_count)
 
         # print("Cost:", cost)
@@ -201,33 +182,26 @@ class NeuralNetwork:
         #############################
         # Back propagation          #
         #############################
-        delta4 = a4 - y
-        delta3 = delta4 @ self.theta3[:, 1:] * sigmoid_gradient(z3)
+
+        delta3 = a3 - y
         delta2 = delta3 @ self.theta2[:, 1:] * sigmoid_gradient(z2)
 
-        Delta3 = delta4.transpose() @ a3
         Delta2 = delta3.transpose() @ a2
         Delta1 = delta2.transpose() @ x
 
         Theta1_grad = Delta1 / samples_count
         Theta2_grad = Delta2 / samples_count
-        Theta3_grad = Delta3 / samples_count
 
         # Add regularization
         if self.lambda_value != 0:
             regularization1 = (self.lambda_value / samples_count) * self.theta1[:, 1:]
             regularization2 = (self.lambda_value / samples_count) * self.theta2[:, 1:]
-            regularization3 = (self.lambda_value / samples_count) * self.theta3[:, 1:]
-
             Theta1_grad[:, 1:] = Theta1_grad[:, 1:] + regularization1
             Theta2_grad[:, 1:] = Theta2_grad[:, 1:] + regularization2
-            Theta3_grad[:, 1:] = Theta3_grad[:, 1:] + regularization3
-
 
         # Update weights
         self.theta1 = self.theta1 - self.alpha * Theta1_grad
         self.theta2 = self.theta2 - self.alpha * Theta2_grad
-        self.theta3 = self.theta3 - self.alpha * Theta3_grad
 
     def train(self, iteration_count, x, decimal_y):
         start_time = time.time()
@@ -250,19 +224,16 @@ class NeuralNetwork:
         # Add ones to a2 as first column
         a2 = np.c_[np.ones(samples_count), a2]
 
-        # 2nd layer hidden
+        # Output layer activation
         z3 = a2 @ self.theta2.transpose()
         a3 = sigmoid(z3)
 
-        # Add ones to a3 as first column
-        a3 = np.c_[np.ones(samples_count), a3]       
-        # Output 
-        z4 = a3 @ self.theta3.transpose()
-        a4 = sigmoid(z4)
-        # Convert binary prediction to de
-        decimal_prediction = a4.argmax(1)
+        # Convert binary prediction to decimal
+        decimal_prediction = a3.argmax(1)
+
         end_time = time.time() - start_time
-        print("Prediction execution time:")
+        print("Prediction execution time: {} seconds".format(end_time))
+
         return decimal_prediction
 
 
