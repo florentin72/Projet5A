@@ -131,7 +131,7 @@ def test_with_train_data(x, y_true):
 class NeuralNetwork:
     def __init__(self):
         self.features_count = 1 * 25
-        self.labels_count = 8
+        self.labels_count = 2
 
         self.hidden_layer_size = 100
 

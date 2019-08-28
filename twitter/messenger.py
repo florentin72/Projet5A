@@ -1,4 +1,3 @@
-  
 #Python libraries that we need to import for our bot
 import random
 from flask import Flask, request
@@ -7,7 +6,7 @@ import twitterConfig
 
 app = Flask(__name__)
 ACCESS_TOKEN = twitterConfig.messenger_token
-VERIFY_TOKEN = 'VERIFY_TOKEN'
+VERIFY_TOKEN = twitterConfig.verification_token
 bot = Bot(ACCESS_TOKEN)
 
 #We will receive messages that Facebook sends our bot at this endpoint 
@@ -41,9 +40,15 @@ def receive_message():
 def verify_fb_token(token_sent):
     #take token sent by facebook and verify it matches the verify token you sent
     #if they match, allow the request, else return an error 
-    if token_sent == VERIFY_TOKEN:
-        return request.args.get("hub.challenge")
-    return 'Invalid verification token'
+    if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
+        if not request.args.get("hub.verify_token") == VERIFY_TOKEN:
+
+            return "Verification token mismatch", 403
+
+        return request.args["hub.challenge"], 200
+    return "Hello world", 200
+
+
 
 
 #chooses a random message to send to the user
@@ -59,4 +64,4 @@ def send_message(recipient_id, response):
     return "success"
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=8000)
