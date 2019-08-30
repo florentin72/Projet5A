@@ -1,5 +1,5 @@
 import time
-
+import pickle
 import numpy as np
 from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score, confusion_matrix
 from sklearn.model_selection import train_test_split, StratifiedKFold
@@ -126,6 +126,7 @@ def test_with_train_data(x, y_true):
     nn.train(100, x, y_true)
     y_pred = nn.predict(x)
     metrics(y_true, y_pred)
+    return nn
 
 
 class NeuralNetwork:
@@ -241,12 +242,15 @@ def main():
     x = load_samples(data_path)
     y = load_labels(classification_path)
 
-    test_with_train_data(x, y)
+    rnn =  test_with_train_data(x, y)
     scalability_test(x, y)
     cross_valid(x, y)
-
+     
+    with  open("donnees_enregistrees", 'wb') as file_:
+        pickle.dump(rnn, file_)
+       
     print("END")
-
+    print (rnn.predict(x))
 
 if __name__ == '__main__':
     main()

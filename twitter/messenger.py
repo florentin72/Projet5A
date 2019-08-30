@@ -4,6 +4,8 @@ from flask import Flask, request
 from pymessenger.bot import Bot
 import twitterConfig
 from sklearn.feature_extraction.text import CountVectorizer
+import numpy as np
+
 
 
 
@@ -91,7 +93,7 @@ def word2Vec(message):
         'Écrêtage', 'Paris', 'Barthès'])# retrieving the matrix in the numpy form
     X.toarray()# transforming a new document according to learn vocabulary
     # learn the vocabulary and store CountVectorizer sparse matrix in X
-    a = vectorizer.transform(message).toarray()
+    a = vectorizer.transform([str(message)]).toarray()
     #inputVector.write(vectorizer.transform([token]).toarray())
     np.savetxt("truc.csv", a, delimiter=";",fmt='%d')
     return a 
