@@ -5,7 +5,7 @@ from pymessenger.bot import Bot
 import twitterConfig
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
-
+import NeuralNetwork
 
 
 
@@ -67,6 +67,7 @@ def verify_fb_token(token_sent):
 #chooses a random message to send to the user
 def get_message(message_recu):
     response = word2Vec(message_recu)
+    
     return str(response)
 
 #uses PyMessenger to send response to user
@@ -95,7 +96,7 @@ def word2Vec(message):
     # learn the vocabulary and store CountVectorizer sparse matrix in X
     a = vectorizer.transform([str(message)]).toarray()
     #inputVector.write(vectorizer.transform([token]).toarray())
-    np.savetxt("truc.csv", a, delimiter=";",fmt='%d')
+    np.savetxt("truc.csv", a, delimiter=",",fmt='%d')
     return a 
 
 
