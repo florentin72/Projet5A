@@ -134,7 +134,7 @@ class NeuralNetwork:
         self.features_count = 1 * 25
         self.labels_count = 2
 
-        self.hidden_layer_size = 100
+        self.hidden_layer_size = 15
 
         self.theta1 = None
         self.theta2 = None
@@ -246,11 +246,7 @@ def main():
     scalability_test(x, y)
     cross_valid(x, y)
      
-    with  open("donnees_enregistrees", 'wb') as file_:
-        pickle.dump(rnn, file_)
-       
-    print("END")
-    print (rnn.predict(x))
+   
 
 if __name__ == '__main__':
     main()

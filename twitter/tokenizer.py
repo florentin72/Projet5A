@@ -44,8 +44,15 @@ vectorizer.get_feature_names() == (
 X.toarray()# transforming a new document according to learn vocabulary
 # learn the vocabulary and store CountVectorizer sparse matrix in X
 a = vectorizer.transform(['Barthès va à la plange et Gorafi humour.']).toarray()
-newrow = (vectorizer.transform(['Barthès repas à la Paris tétracapillosectomie Gorafi humour.']).toarray())
-a = np.vstack([a, newrow])
+label = open ("label.cvs",'w')
+fake = open("filteredtext.txt",'r')
+label.write("0"+ '\n')
+for line in fake:
+
+       newrow = (vectorizer.transform([str(fake)]).toarray())
+       a = np.vstack([a, newrow])
+       label.write("0"+ '\n')
+
 #inputVector.write(vectorizer.transform([token]).toarray())
 np.savetxt("inputNeurone.csv", a, delimiter=",",fmt='%d')
 

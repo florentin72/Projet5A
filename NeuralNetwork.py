@@ -242,13 +242,11 @@ def main():
     x = load_samples(data_path)
     y = load_labels(classification_path)
 
-    rnn =  test_with_train_data(x, y)
+  C
     scalability_test(x, y)
     cross_valid(x, y)
      
-    with  open("donnees_enregistrees", 'wb') as file_:
-        pickle.dump(rnn, file_)
-       
+   
     print("END")
     print (rnn.predict(x))
 
