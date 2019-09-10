@@ -24,6 +24,7 @@ ps = PorterStemmer()
 source = 'fake.txt'
 # import french stop words list
 stop_words = set(stopwords.words('french'))
+
 f = open(source,'r')
 appendFile = open('tweetPropre.txt','a') 
 
@@ -46,7 +47,7 @@ a = vectorizer.transform(['Barthès va à la plange et Gorafi humour.']).toarray
 newrow = (vectorizer.transform(['Barthès repas à la Paris tétracapillosectomie Gorafi humour.']).toarray())
 a = np.vstack([a, newrow])
 #inputVector.write(vectorizer.transform([token]).toarray())
-np.savetxt("inputNeurone.csv", a, delimiter=";",fmt='%d')
+np.savetxt("inputNeurone.csv", a, delimiter=",",fmt='%d')
 
 
 
