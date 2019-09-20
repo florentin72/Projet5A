@@ -1,11 +1,11 @@
-consumer_key='81nXNGlfAqAfAH5MR13qtA5Mz'
+consumer_key='FILL IT'
 
-consumer_secret='7BVlSmUNvGHGgfO1IeDPj9OUKjz8lMI0g2U81DgSovD4J5AOtm'
+consumer_secret='FILL IT'
 
-access_token_key='780607290-uxMvIELa8cTEfwWGwhk8l449Xo8A6gxEuim8NRzN'
+access_token_key='FILL IT'
 
-access_token_secret='dnlRHhNBJxbKPsjj7ZWnnlHZaNk09R0r2BP9bC56u3SlJ'
+access_token_secret='FILL IT'
 
-messenger_token= 'EAAhesdTp62gBAJwdQMGQZAYpuwWvmRH5AkGO0EIzhYqF7RBa86C08P4ZAaqZCQqZAg6EIyHUgTznNmJhlOuRvBZB4R0LBZBmM0vwoFR4YzBIfmgJCSZCligHseEG7vWPcYsYRwG6f6HiITPe0muV7hLORVVHkEQA2RpTSIysnle7wZDZD'
+messenger_token= 'FILL IT'
 
 verification_token = 'hello'

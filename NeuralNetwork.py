@@ -242,7 +242,7 @@ def main():
     x = load_samples(data_path)
     y = load_labels(classification_path)
 
-  C
+  
     scalability_test(x, y)
     cross_valid(x, y)
      
